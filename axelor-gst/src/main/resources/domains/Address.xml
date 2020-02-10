@@ -1,0 +1,13 @@
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.2.xsd">
+
+	<module package="com.axelor.apps.base.db" name="gst" />
+
+	<entity name="Address">
+		<string name="type" title="Type" selection="gst.address.type.select" required="true" />
+		<many-to-one name="state" ref="com.axelor.apps.gst.db.State" title="State" />
+		<many-to-one name="partner" ref="com.axelor.apps.base.db.Partner" />
+	</entity>
+
+</domain-models>

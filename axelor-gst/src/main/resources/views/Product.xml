@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+	<grid model="com.axelor.apps.base.db.Product" title="Product Grid" name="product-grid" id="gst-product-grid" extension="true">
+		<extend target="//button[@name='checkDuplicateBtn']">
+			<insert position="after">
+				<button name="createInvoiceBtn" title="Create Invoice" onClick="action-gst-method-open-invoice-form-with-product" />
+				<button name="importProductBtn" title="Import Some Products" onClick="action-gst-method-import-products" />
+			</insert>
+		</extend>
+		<extend target="//field[@name='internalDescription']">
+			<insert position="after">
+				<field name="hsbn" />
+				<field name="gstRate" />
+			</insert>
+		</extend>
+	</grid>
+
+	<action-method name="action-gst-method-import-products">
+		<call class="com.axelor.apps.gst.web.ProductController" method="importSomeProducts" />
+	</action-method>
+
+	<form model="com.axelor.apps.base.db.Product" title="Product Form" name="product-form" id="gst-product-form" extension="true">
+
+		<extend target="//button[@name='sendByEmailBtn']">
+			<insert position="after">
+				<button name="productReportBtn" title="Print" onClick="action-gst-report-generate-product-report" />
+			</insert>
+		</extend>
+		<extend target="panel[@name='mainPanel']">
+			<insert position="after">
+				<panel>
+					<panel colSpan="9">
+						<field name="hsbn" />
+					</panel>
+				</panel>
+				<panel>
+					<field name="gstRate" />
+				</panel>
+			</insert>
+		</extend>
+	</form>
+
+	<action-method name="action-gst-method-open-invoice-form-with-product">
+		<call class="com.axelor.apps.gst.web.ProductController" method="onClickSelectProductsIntoInvoiceLine" />
+	</action-method>
+
+	<action-view name="action-gst-view-open-invoice-form-with-product" title="Invoice Form" model="com.axelor.apps.base.db.Invoice">
+		<view type="form" name="invoice-form" />
+		<domain>self.invoiceItemList = :selectedProducts </domain>
+		<context name="selectedProducts" expr="" />
+	</action-view>
+
+	<cards name="product-card" model="com.axelor.apps.base.db.Product" title="Product cards">
+		<field name="name" />
+		<field name="code" />
+		<field name="hsbn" />
+		<field name="category" />
+		<field name="salePrice" />
+		<field name="costPrice" />
+		<field name="image" />
+		<field name="gstRate" />
+		<template>
+          <![CDATA[
+              <div class="span4 card-image">
+              <img  ng-src="{{$image(image, 'image')}}">
+              <strong>{{name}}</strong>
+              </div>
+             <div class="span8">
+                 <span><b>Category  &nbsp;&nbsp;</b>{{category.name}}</span></br></br>
+                <span> <b>Saleprice &nbsp;&nbsp; </b>{{salePrice}}</span></br>
+                <span> <b>Costprice &nbsp;&nbsp; </b>{{costPrice}}</span></br>
+             </div>
+            ]]>
+          </template>
+	</cards>
+
+	<action-record name="action-gst-record-set-gstrate-from-product-category" model="com.axelor.apps.base.db.Product">
+		<field name="gstRate" expr="eval: __this__.category.gstRate" />
+	</action-record>
+
+	<action-report output="Product" name="action-gst-report-generate-product-report" design="product_report.rptdesign">
+		<param name="product_id" expr="eval: __self__.id" />
+		<param name="attechment_path" expr='eval: com?.axelor?.app?.AppSettings?.get()?.getPath("file.upload.dir", "")+"/"' />
+	</action-report>
+
+</object-views>

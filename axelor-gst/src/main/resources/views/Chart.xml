@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+    <chart name="invoice-unpaid-chart-per-customer" title="Invoice" onInit="action-gst-attrs-init-search-datetime-fields">
+        <search-fields>
+            <field type="datetime" name="fromDateTime" title="From Date" />
+            <field type="datetime" name="toDateTime" title="To Date" />
+        </search-fields>
+        <dataset type="jpql">
+          <![CDATA[
+                   SELECT
+                        count(self.id) AS invoice_count,
+                        MONTH(self.invoiceDateT) AS month,
+                        _partner.name AS _partner
+                    FROM
+                        Invoice self
+                    LEFT JOIN
+                        self.partner AS _partner
+                    WHERE
+                        self.invoiceDateT > :fromDateTime
+                        AND self.invoiceDateT < :toDateTime
+                        AND self.statusSelect <> 'paid'
+                    GROUP BY
+                        _partner,
+                        MONTH(self.invoiceDateT)
+                    ORDER BY
+                        _partner
+            ]]>
+            </dataset>
+        <category key="_partner" type="text" title="Customer" />
+        <series key="invoice_count" type="bar" title="Invoices" />
+    </chart>
+
+    <action-attrs name="action-gst-attrs-init-search-datetime-fields">
+        <!-- <attribute name="value" for="fromDateTime" expr="eval: LocalDate.parse(LocalDate?.now()?.getYear() + &quot;-&quot; + LocalDate?.now()?.get);"/> -->
+        <!-- <attribute name="value" for="fromDateTime" expr="eval: LocalDateTime.of(2017, 2, 13, 15, 56).format(DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy HH:mm:ss&quot;));"/> -->
+        <attribute name="value" for="fromDateTime" expr="eval: LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1, 00, 00);" />
+        <attribute name="value" for="toDateTime" expr="eval: __datetime__" />
+    </action-attrs>
+
+    <chart name="invoice-paid-chart-per-category" title="Invoice" onInit="action-gst-attrs-init-search-datetime-fields">
+        <search-fields>
+            <field type="datetime" name="fromDateTime" title="From Date" />
+            <field type="datetime" name="toDateTime" title="To Date" />
+        </search-fields>
+        <dataset type="jpql">
+          <![CDATA[
+                   SELECT
+                       _product.name as product_name,
+                       _category.name as category_name,
+                       COUNT(self.invoice) AS invoice_count
+                    FROM
+                        InvoiceLine self
+                      LEFT JOIN
+                        self.invoice AS _invoice
+                    LEFT JOIN
+                        self.product AS _product
+                    LEFT JOIN
+                          _product.category AS _category
+                    WHERE
+                        _invoice.invoiceDateT > :fromDateTime
+                        AND _invoice.invoiceDateT < :toDateTime
+                        AND _invoice.statusSelect = 'paid'
+                    GROUP BY
+                        _product.name,
+                        _category.name,
+                        _invoice.id,
+                        _invoice.statusSelect
+                    ORDER BY
+                        _invoice.id
+            ]]>
+            </dataset>
+        <category key="category_name" type="text" title="Category" />
+        <series key="invoice_count" type="bar" title="Invoices" />
+    </chart>
+
+    <chart name="partner-chart-per-state" title="Customer per State chart">
+        <dataset type="jpql">
+        <![CDATA[
+          SELECT
+            state.name as _state,
+            COUNT(a.partner.name) as partner
+          FROM
+            Address a
+          LEFT JOIN
+            a.state as state
+          GROUP BY
+            state,
+            partner
+        ]]>
+      </dataset>
+        <category key="_state" title="State" />
+        <series key="partner" type="pie" title="Customer" />
+    </chart>
+
+    <chart name="invoice-per-status-amount-bar" title="Invoice Amount Chart">
+        <dataset type="jpql">
+        <![CDATA[
+
+          SELECT
+            i.statusSelect AS status,
+            (SELECT SUM(a.grossAmount) AS _amount FROM Invoice a WHERE a.statusSelect = i.statusSelect) AS _amount
+          FROM
+            Invoice i
+          GROUP BY
+            i.statusSelect
+
+        ]]>
+      </dataset>
+        <category key="status" title="Status" />
+        <series key="_amount" title="Amount" type="bar" />
+        <!-- SELECT
+            i.statusSelect AS status,
+            (SELECT SUM(a.grossAmount) AS _amount FROM Invoice a WHERE a.statusSelect = i.statusSelect) AS _amount
+          FROM
+            Invoice i
+          WHERE
+            (SELECT SUM(a.grossAmount) AS _amount FROM Invoice a WHERE a.statusSelect = i.statusSelect) < :amount
+          GROUP BY
+            i.statusSelect -->
+    </chart>
+
+
+
+    <!-- <action-attrs name="action-gst-attrs-set-value-of-amount-of-invoice">
+        <attribute name="value" for="amount" expr="9999999999" />
+    </action-attrs> -->
+
+    <chart name="invoice-per-status-line-chart" title="Invoice Amount Chart">
+        <dataset type="jpql">
+        <![CDATA[
+          SELECT
+            i.statusSelect AS status,
+            COUNT(i.id) AS cnt
+          FROM
+            Invoice i
+          GROUP BY
+            i.statusSelect
+        ]]>
+      </dataset>
+        <category key="status" title="Status" />
+        <series key="cnt" title="Invoices" type="line" />
+    </chart>
+
+
+</object-views>

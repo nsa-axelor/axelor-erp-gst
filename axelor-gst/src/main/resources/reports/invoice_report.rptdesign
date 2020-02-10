@@ -1,0 +1,2945 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.7.0.v201706222054</property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">143</property>
+    <parameters>
+        <scalar-parameter name="invoice_id" id="6">
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">decimal</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="attachment_path" id="11">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">{user.home}/.axelor/attachments</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="Data Source" id="4">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/axelor-gst-app</property>
+            <property name="odaUser">axelor</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">YXhlbG9y</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Invoice Set" id="5">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">id</property>
+                    <property name="alias">id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">archived</property>
+                    <property name="alias">archived</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">archived</text-property>
+                    <text-property name="heading">archived</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">version</property>
+                    <property name="alias">version</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">version</text-property>
+                    <text-property name="heading">version</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">created_on</property>
+                    <property name="alias">created_on</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">created_on</text-property>
+                    <text-property name="heading">created_on</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">updated_on</property>
+                    <property name="alias">updated_on</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">updated_on</text-property>
+                    <text-property name="heading">updated_on</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">attrs</property>
+                    <property name="alias">attrs</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">attrs</text-property>
+                    <text-property name="heading">attrs</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">gross_amount</property>
+                    <property name="alias">gross_amount</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">gross_amount</text-property>
+                    <text-property name="heading">gross_amount</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">invoice_datet</property>
+                    <property name="alias">invoice_datet</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">invoice_datet</text-property>
+                    <text-property name="heading">invoice_datet</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">is_use_invoice_address_as_shipping</property>
+                    <property name="alias">is_use_invoice_address_as_shipping</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">is_use_invoice_address_as_shipping</text-property>
+                    <text-property name="heading">is_use_invoice_address_as_shipping</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_amount</property>
+                    <property name="alias">net_amount</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_amount</text-property>
+                    <text-property name="heading">net_amount</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_csgt</property>
+                    <property name="alias">net_csgt</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_csgt</text-property>
+                    <text-property name="heading">net_csgt</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_igst</property>
+                    <property name="alias">net_igst</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_igst</text-property>
+                    <text-property name="heading">net_igst</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_sgst</property>
+                    <property name="alias">net_sgst</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_sgst</text-property>
+                    <text-property name="heading">net_sgst</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">priority</property>
+                    <property name="alias">priority</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">priority</text-property>
+                    <text-property name="heading">priority</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">reference</property>
+                    <property name="alias">reference</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">reference</text-property>
+                    <text-property name="heading">reference</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">status_select</property>
+                    <property name="alias">status_select</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">status_select</text-property>
+                    <text-property name="heading">status_select</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">created_by</property>
+                    <property name="alias">created_by</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">created_by</text-property>
+                    <text-property name="heading">created_by</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">updated_by</property>
+                    <property name="alias">updated_by</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">updated_by</text-property>
+                    <text-property name="heading">updated_by</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">company</property>
+                    <property name="alias">company</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">company</text-property>
+                    <text-property name="heading">company</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">invoice_address</property>
+                    <property name="alias">invoice_address</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">invoice_address</text-property>
+                    <text-property name="heading">invoice_address</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">party</property>
+                    <property name="alias">party</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">party</text-property>
+                    <text-property name="heading">party</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">party_contact</property>
+                    <property name="alias">party_contact</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">party_contact</text-property>
+                    <text-property name="heading">party_contact</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">shipping_address</property>
+                    <property name="alias">shipping_address</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">shipping_address</text-property>
+                    <text-property name="heading">shipping_address</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">file_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">file_name</text-property>
+                    <text-property name="heading">file_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">company_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">company_name</text-property>
+                    <text-property name="heading">company_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">company_address</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">company_address</text-property>
+                    <text-property name="heading">company_address</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">party_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">party_name</text-property>
+                    <text-property name="heading">party_name</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">invoice_id</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">archived</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">version</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">created_on</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">updated_on</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">attrs</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">gross_amount</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">invoice_datet</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">is_use_invoice_address_as_shipping</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">net_amount</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">net_csgt</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">net_igst</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">net_sgst</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">priority</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">reference</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">status_select</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">created_by</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">updated_by</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">company</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">invoice_address</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">party</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">party_contact</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">shipping_address</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">file_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">company_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">company_address</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">party_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">id</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">archived</property>
+                    <property name="nativeName">archived</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-7</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">version</property>
+                    <property name="nativeName">version</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">created_on</property>
+                    <property name="nativeName">created_on</property>
+                    <property name="dataType">date-time</property>
+                    <property name="nativeDataType">93</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">updated_on</property>
+                    <property name="nativeName">updated_on</property>
+                    <property name="dataType">date-time</property>
+                    <property name="nativeDataType">93</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">attrs</property>
+                    <property name="nativeName">attrs</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1111</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">gross_amount</property>
+                    <property name="nativeName">gross_amount</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">invoice_datet</property>
+                    <property name="nativeName">invoice_datet</property>
+                    <property name="dataType">date-time</property>
+                    <property name="nativeDataType">93</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">is_use_invoice_address_as_shipping</property>
+                    <property name="nativeName">is_use_invoice_address_as_shipping</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-7</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">net_amount</property>
+                    <property name="nativeName">net_amount</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">net_csgt</property>
+                    <property name="nativeName">net_csgt</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">net_igst</property>
+                    <property name="nativeName">net_igst</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">net_sgst</property>
+                    <property name="nativeName">net_sgst</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">priority</property>
+                    <property name="nativeName">priority</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">reference</property>
+                    <property name="nativeName">reference</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">status_select</property>
+                    <property name="nativeName">status_select</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">created_by</property>
+                    <property name="nativeName">created_by</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">updated_by</property>
+                    <property name="nativeName">updated_by</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">company</property>
+                    <property name="nativeName">company</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">invoice_address</property>
+                    <property name="nativeName">invoice_address</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">party</property>
+                    <property name="nativeName">party</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">party_contact</property>
+                    <property name="nativeName">party_contact</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">shipping_address</property>
+                    <property name="nativeName">shipping_address</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">file_name</property>
+                    <property name="nativeName">file_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">company_name</property>
+                    <property name="nativeName">company_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">company_address</property>
+                    <property name="nativeName">company_address</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">27</property>
+                    <property name="name">party_name</property>
+                    <property name="nativeName">party_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+		gst_invoice.*,
+		meta_file.file_name,
+		gst_company.name as company_name,
+		gst_address.full_address as company_address,
+		gst_party.name as party_name
+from gst_invoice
+inner join gst_company on gst_invoice.company = gst_company.id
+inner join gst_address on gst_company.address = gst_address.id
+left outer join meta_file on gst_company.logo = meta_file.id
+left outer join gst_party on gst_invoice.party = gst_party.id
+where gst_invoice.id = ?;]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Invoice ItemList Set" id="32">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">id</property>
+                    <property name="alias">id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">archived</property>
+                    <property name="alias">archived</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">archived</text-property>
+                    <text-property name="heading">archived</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">version</property>
+                    <property name="alias">version</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">version</text-property>
+                    <text-property name="heading">version</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">created_on</property>
+                    <property name="alias">created_on</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">created_on</text-property>
+                    <text-property name="heading">created_on</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">updated_on</property>
+                    <property name="alias">updated_on</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">updated_on</text-property>
+                    <text-property name="heading">updated_on</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">attrs</property>
+                    <property name="alias">attrs</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">attrs</text-property>
+                    <text-property name="heading">attrs</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csgt</property>
+                    <property name="alias">csgt</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csgt</text-property>
+                    <text-property name="heading">csgt</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">gross_amount</property>
+                    <property name="alias">gross_amount</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">gross_amount</text-property>
+                    <text-property name="heading">gross_amount</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">gst_rate</property>
+                    <property name="alias">gst_rate</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">gst_rate</text-property>
+                    <text-property name="heading">gst_rate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">hsbn</property>
+                    <property name="alias">hsbn</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">hsbn</text-property>
+                    <text-property name="heading">hsbn</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">igst</property>
+                    <property name="alias">igst</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">igst</text-property>
+                    <text-property name="heading">igst</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">item</property>
+                    <property name="alias">item</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">item</text-property>
+                    <text-property name="heading">item</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_amount</property>
+                    <property name="alias">net_amount</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_amount</text-property>
+                    <text-property name="heading">net_amount</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">price</property>
+                    <property name="alias">price</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">price</text-property>
+                    <text-property name="heading">price</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">qty</property>
+                    <property name="alias">qty</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">qty</text-property>
+                    <text-property name="heading">qty</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sgst</property>
+                    <property name="alias">sgst</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sgst</text-property>
+                    <text-property name="heading">sgst</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">created_by</property>
+                    <property name="alias">created_by</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">created_by</text-property>
+                    <text-property name="heading">created_by</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">updated_by</property>
+                    <property name="alias">updated_by</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">updated_by</text-property>
+                    <text-property name="heading">updated_by</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">invoice</property>
+                    <property name="alias">invoice</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">invoice</text-property>
+                    <text-property name="heading">invoice</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">product</property>
+                    <property name="alias">product</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">product</text-property>
+                    <text-property name="heading">product</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">total_amount</property>
+                    <property name="alias">total_amount</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">total_amount</text-property>
+                    <text-property name="heading">total_amount</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_igst</property>
+                    <property name="alias">net_igst</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_igst</text-property>
+                    <text-property name="heading">net_igst</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_sgst</property>
+                    <property name="alias">net_sgst</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_sgst</text-property>
+                    <text-property name="heading">net_sgst</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">net_csgt</property>
+                    <property name="alias">net_csgt</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">net_csgt</text-property>
+                    <text-property name="heading">net_csgt</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">total_gross</property>
+                    <property name="alias">total_gross</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">total_gross</text-property>
+                    <text-property name="heading">total_gross</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">total_qty</property>
+                    <property name="alias">total_qty</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">total_qty</text-property>
+                    <text-property name="heading">total_qty</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">invoice_id</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">archived</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">version</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">created_on</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">updated_on</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">attrs</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">csgt</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">gross_amount</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">gst_rate</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">hsbn</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">igst</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">item</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">net_amount</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">price</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">qty</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">sgst</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">created_by</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">updated_by</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">invoice</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">product</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">total_amount</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">net_igst</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">net_sgst</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">net_csgt</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">total_gross</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">total_qty</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">id</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">archived</property>
+                    <property name="nativeName">archived</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">version</property>
+                    <property name="nativeName">version</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">created_on</property>
+                    <property name="nativeName">created_on</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">updated_on</property>
+                    <property name="nativeName">updated_on</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">attrs</property>
+                    <property name="nativeName">attrs</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">csgt</property>
+                    <property name="nativeName">csgt</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">gross_amount</property>
+                    <property name="nativeName">gross_amount</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">gst_rate</property>
+                    <property name="nativeName">gst_rate</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">hsbn</property>
+                    <property name="nativeName">hsbn</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">igst</property>
+                    <property name="nativeName">igst</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">item</property>
+                    <property name="nativeName">item</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">net_amount</property>
+                    <property name="nativeName">net_amount</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">price</property>
+                    <property name="nativeName">price</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">qty</property>
+                    <property name="nativeName">qty</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">sgst</property>
+                    <property name="nativeName">sgst</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">created_by</property>
+                    <property name="nativeName">created_by</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">updated_by</property>
+                    <property name="nativeName">updated_by</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">invoice</property>
+                    <property name="nativeName">invoice</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">product</property>
+                    <property name="nativeName">product</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">total_amount</property>
+                    <property name="nativeName">total_amount</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">net_igst</property>
+                    <property name="nativeName">net_igst</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">net_sgst</property>
+                    <property name="nativeName">net_sgst</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">net_csgt</property>
+                    <property name="nativeName">net_csgt</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">total_gross</property>
+                    <property name="nativeName">total_gross</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">total_qty</property>
+                    <property name="nativeName">total_qty</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+		gst_invoice_line.*,
+		gst_invoice.net_amount as total_amount,
+		gst_invoice.net_igst,
+		gst_invoice.net_sgst,
+		gst_invoice.net_csgt,
+		sum(gst_invoice_line.gross_amount) over () as total_gross,
+		sum(gst_invoice_line.qty) over () as total_qty
+from gst_invoice_line
+inner join gst_invoice on gst_invoice_line.invoice = gst_invoice.id
+where gst_invoice_line.invoice = ?
+group by gst_invoice_line.id,gst_invoice.net_amount,gst_invoice.net_igst,gst_invoice.net_sgst,gst_invoice.net_csgt;]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>archived</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-7</design:nativeDataTypeCode>
+            <design:precision>1</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>archived</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>archived</design:label>
+            <design:formattingHints>
+              <design:displaySize>1</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>version</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>version</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>version</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>created_on</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>93</design:nativeDataTypeCode>
+            <design:precision>29</design:precision>
+            <design:scale>6</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>created_on</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>created_on</design:label>
+            <design:formattingHints>
+              <design:displaySize>29</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>updated_on</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>93</design:nativeDataTypeCode>
+            <design:precision>29</design:precision>
+            <design:scale>6</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>updated_on</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>updated_on</design:label>
+            <design:formattingHints>
+              <design:displaySize>29</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>attrs</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1111</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>attrs</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>attrs</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>csgt</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>csgt</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>csgt</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>gross_amount</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>gross_amount</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>gross_amount</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>gst_rate</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>gst_rate</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>gst_rate</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>hsbn</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>hsbn</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>hsbn</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>igst</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>igst</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>igst</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>item</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>item</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>item</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>net_amount</design:name>
+              <design:position>13</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>net_amount</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>net_amount</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>price</design:name>
+              <design:position>14</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>price</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>price</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>qty</design:name>
+              <design:position>15</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>qty</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>qty</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sgst</design:name>
+              <design:position>16</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sgst</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sgst</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>created_by</design:name>
+              <design:position>17</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>created_by</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>created_by</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>updated_by</design:name>
+              <design:position>18</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>updated_by</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>updated_by</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>invoice</design:name>
+              <design:position>19</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>invoice</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>invoice</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>product</design:name>
+              <design:position>20</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>product</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>product</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <text id="236">
+            <property name="marginTop">-20pt</property>
+            <property name="marginLeft">20pt</property>
+            <property name="dataSet">Invoice Set</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <text-property name="displayName">id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">archived</property>
+                    <text-property name="displayName">archived</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["archived"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">version</property>
+                    <text-property name="displayName">version</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["version"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">created_on</property>
+                    <text-property name="displayName">created_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_on</property>
+                    <text-property name="displayName">updated_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">attrs</property>
+                    <text-property name="displayName">attrs</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["attrs"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">gross_amount</property>
+                    <text-property name="displayName">gross_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["gross_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">invoice_datet</property>
+                    <text-property name="displayName">invoice_datet</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["invoice_datet"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">is_use_invoice_address_as_shipping</property>
+                    <text-property name="displayName">is_use_invoice_address_as_shipping</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["is_use_invoice_address_as_shipping"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">net_amount</property>
+                    <text-property name="displayName">net_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_csgt</property>
+                    <text-property name="displayName">net_csgt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_csgt"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_igst</property>
+                    <text-property name="displayName">net_igst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_igst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_sgst</property>
+                    <text-property name="displayName">net_sgst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_sgst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">priority</property>
+                    <text-property name="displayName">priority</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["priority"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">reference</property>
+                    <text-property name="displayName">reference</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["reference"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">status_select</property>
+                    <text-property name="displayName">status_select</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["status_select"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">created_by</property>
+                    <text-property name="displayName">created_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_by</property>
+                    <text-property name="displayName">updated_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">company</property>
+                    <text-property name="displayName">company</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">invoice_address</property>
+                    <text-property name="displayName">invoice_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["invoice_address"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">party</property>
+                    <text-property name="displayName">party</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">party_contact</property>
+                    <text-property name="displayName">party_contact</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party_contact"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">shipping_address</property>
+                    <text-property name="displayName">shipping_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["shipping_address"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">file_name</property>
+                    <text-property name="displayName">file_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">company_name</property>
+                    <text-property name="displayName">company_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">company_address</property>
+                    <text-property name="displayName">company_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company_address"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">party_name</property>
+                    <text-property name="displayName">party_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <property name="contentType">html</property>
+            <text-property name="content"><![CDATA[<VALUE-OF format="HTML">"<IMG src='" + params["attechment_path"].value + row["file_name"] + "' width='180'/>"</VALUE-OF>
+]]></text-property>
+        </text>
+        <label id="15">
+            <property name="fontSize">18pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="marginTop">15pt</property>
+            <property name="textAlign">center</property>
+            <text-property name="text">Invoice</text-property>
+        </label>
+        <grid id="22">
+            <property name="marginTop">20pt</property>
+            <property name="dataSet">Invoice Set</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <text-property name="displayName">id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">archived</property>
+                    <text-property name="displayName">archived</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["archived"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">version</property>
+                    <text-property name="displayName">version</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["version"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">created_on</property>
+                    <text-property name="displayName">created_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_on</property>
+                    <text-property name="displayName">updated_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">attrs</property>
+                    <text-property name="displayName">attrs</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["attrs"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">gross_amount</property>
+                    <text-property name="displayName">gross_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["gross_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">invoice_datet</property>
+                    <text-property name="displayName">invoice_datet</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["invoice_datet"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">is_use_invoice_address_as_shipping</property>
+                    <text-property name="displayName">is_use_invoice_address_as_shipping</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["is_use_invoice_address_as_shipping"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">net_amount</property>
+                    <text-property name="displayName">net_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_csgt</property>
+                    <text-property name="displayName">net_csgt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_csgt"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_igst</property>
+                    <text-property name="displayName">net_igst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_igst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_sgst</property>
+                    <text-property name="displayName">net_sgst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_sgst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">priority</property>
+                    <text-property name="displayName">priority</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["priority"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">reference</property>
+                    <text-property name="displayName">reference</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["reference"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">status_select</property>
+                    <text-property name="displayName">status_select</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["status_select"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">created_by</property>
+                    <text-property name="displayName">created_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_by</property>
+                    <text-property name="displayName">updated_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">company</property>
+                    <text-property name="displayName">company</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">invoice_address</property>
+                    <text-property name="displayName">invoice_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["invoice_address"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">party</property>
+                    <text-property name="displayName">party</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">party_contact</property>
+                    <text-property name="displayName">party_contact</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party_contact"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">shipping_address</property>
+                    <text-property name="displayName">shipping_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["shipping_address"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">file_name</property>
+                    <text-property name="displayName">file_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">company_name</property>
+                    <text-property name="displayName">company_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">company_address</property>
+                    <text-property name="displayName">company_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company_address"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">party_name</property>
+                    <text-property name="displayName">party_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="23"/>
+            <column id="24"/>
+            <row id="25">
+                <cell id="26">
+                    <text id="28">
+                        <property name="fontSize">12pt</property>
+                        <property name="dataSet">Invoice Set</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">id</property>
+                                <text-property name="displayName">id</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">archived</property>
+                                <text-property name="displayName">archived</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["archived"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">version</property>
+                                <text-property name="displayName">version</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["version"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">created_on</property>
+                                <text-property name="displayName">created_on</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["created_on"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">updated_on</property>
+                                <text-property name="displayName">updated_on</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["updated_on"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">attrs</property>
+                                <text-property name="displayName">attrs</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["attrs"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">gross_amount</property>
+                                <text-property name="displayName">gross_amount</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["gross_amount"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">invoice_datet</property>
+                                <text-property name="displayName">invoice_datet</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["invoice_datet"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">is_use_invoice_address_as_shipping</property>
+                                <text-property name="displayName">is_use_invoice_address_as_shipping</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["is_use_invoice_address_as_shipping"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_amount</property>
+                                <text-property name="displayName">net_amount</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_amount"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_csgt</property>
+                                <text-property name="displayName">net_csgt</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_csgt"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_igst</property>
+                                <text-property name="displayName">net_igst</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_igst"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_sgst</property>
+                                <text-property name="displayName">net_sgst</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_sgst"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">priority</property>
+                                <text-property name="displayName">priority</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["priority"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">reference</property>
+                                <text-property name="displayName">reference</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["reference"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">status_select</property>
+                                <text-property name="displayName">status_select</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["status_select"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">created_by</property>
+                                <text-property name="displayName">created_by</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["created_by"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">updated_by</property>
+                                <text-property name="displayName">updated_by</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["updated_by"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">company</property>
+                                <text-property name="displayName">company</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["company"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">invoice_address</property>
+                                <text-property name="displayName">invoice_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["invoice_address"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">party</property>
+                                <text-property name="displayName">party</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["party"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">party_contact</property>
+                                <text-property name="displayName">party_contact</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["party_contact"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">shipping_address</property>
+                                <text-property name="displayName">shipping_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["shipping_address"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">file_name</property>
+                                <text-property name="displayName">file_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">name</property>
+                                <text-property name="displayName">name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">full_address</property>
+                                <text-property name="displayName">full_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["full_address"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<B>
+Date 
+</B><VALUE-OF>row["invoice_datet"]</VALUE-OF>]]></text-property>
+                    </text>
+                    <text id="29">
+                        <property name="fontSize">12pt</property>
+                        <property name="dataSet">Invoice Set</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">id</property>
+                                <text-property name="displayName">id</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">archived</property>
+                                <text-property name="displayName">archived</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["archived"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">version</property>
+                                <text-property name="displayName">version</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["version"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">created_on</property>
+                                <text-property name="displayName">created_on</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["created_on"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">updated_on</property>
+                                <text-property name="displayName">updated_on</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["updated_on"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">attrs</property>
+                                <text-property name="displayName">attrs</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["attrs"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">gross_amount</property>
+                                <text-property name="displayName">gross_amount</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["gross_amount"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">invoice_datet</property>
+                                <text-property name="displayName">invoice_datet</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["invoice_datet"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">is_use_invoice_address_as_shipping</property>
+                                <text-property name="displayName">is_use_invoice_address_as_shipping</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["is_use_invoice_address_as_shipping"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_amount</property>
+                                <text-property name="displayName">net_amount</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_amount"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_csgt</property>
+                                <text-property name="displayName">net_csgt</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_csgt"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_igst</property>
+                                <text-property name="displayName">net_igst</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_igst"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_sgst</property>
+                                <text-property name="displayName">net_sgst</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_sgst"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">priority</property>
+                                <text-property name="displayName">priority</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["priority"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">reference</property>
+                                <text-property name="displayName">reference</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["reference"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">status_select</property>
+                                <text-property name="displayName">status_select</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["status_select"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">created_by</property>
+                                <text-property name="displayName">created_by</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["created_by"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">updated_by</property>
+                                <text-property name="displayName">updated_by</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["updated_by"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">company</property>
+                                <text-property name="displayName">company</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["company"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">invoice_address</property>
+                                <text-property name="displayName">invoice_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["invoice_address"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">party</property>
+                                <text-property name="displayName">party</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["party"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">party_contact</property>
+                                <text-property name="displayName">party_contact</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["party_contact"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">shipping_address</property>
+                                <text-property name="displayName">shipping_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["shipping_address"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">file_name</property>
+                                <text-property name="displayName">file_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">name</property>
+                                <text-property name="displayName">name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">full_address</property>
+                                <text-property name="displayName">full_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["full_address"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<B>
+Reference
+</B><VALUE-OF>row["reference"]</VALUE-OF>]]></text-property>
+                    </text>
+                </cell>
+                <cell id="27">
+                    <text id="30">
+                        <property name="fontSize">12pt</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<B>
+Party name
+</B>]]></text-property>
+                    </text>
+                    <text id="31">
+                        <property name="fontSize">12pt</property>
+                        <property name="dataSet">Invoice Set</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">id</property>
+                                <text-property name="displayName">id</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">archived</property>
+                                <text-property name="displayName">archived</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["archived"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">version</property>
+                                <text-property name="displayName">version</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["version"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">created_on</property>
+                                <text-property name="displayName">created_on</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["created_on"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">updated_on</property>
+                                <text-property name="displayName">updated_on</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["updated_on"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">attrs</property>
+                                <text-property name="displayName">attrs</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["attrs"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">gross_amount</property>
+                                <text-property name="displayName">gross_amount</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["gross_amount"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">invoice_datet</property>
+                                <text-property name="displayName">invoice_datet</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["invoice_datet"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">is_use_invoice_address_as_shipping</property>
+                                <text-property name="displayName">is_use_invoice_address_as_shipping</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["is_use_invoice_address_as_shipping"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_amount</property>
+                                <text-property name="displayName">net_amount</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_amount"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_csgt</property>
+                                <text-property name="displayName">net_csgt</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_csgt"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_igst</property>
+                                <text-property name="displayName">net_igst</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_igst"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_sgst</property>
+                                <text-property name="displayName">net_sgst</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_sgst"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">priority</property>
+                                <text-property name="displayName">priority</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["priority"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">reference</property>
+                                <text-property name="displayName">reference</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["reference"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">status_select</property>
+                                <text-property name="displayName">status_select</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["status_select"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">created_by</property>
+                                <text-property name="displayName">created_by</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["created_by"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">updated_by</property>
+                                <text-property name="displayName">updated_by</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["updated_by"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">company</property>
+                                <text-property name="displayName">company</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["company"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">invoice_address</property>
+                                <text-property name="displayName">invoice_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["invoice_address"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">party</property>
+                                <text-property name="displayName">party</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["party"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">party_contact</property>
+                                <text-property name="displayName">party_contact</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["party_contact"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">shipping_address</property>
+                                <text-property name="displayName">shipping_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["shipping_address"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">file_name</property>
+                                <text-property name="displayName">file_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">name</property>
+                                <text-property name="displayName">name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">full_address</property>
+                                <text-property name="displayName">full_address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["full_address"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">party_name</property>
+                                <text-property name="displayName">party_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<VALUE-OF>row["party_name"]</VALUE-OF>]]></text-property>
+                    </text>
+                </cell>
+            </row>
+        </grid>
+        <table id="157">
+            <property name="marginTop">15pt</property>
+            <property name="dataSet">Invoice ItemList Set</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <text-property name="displayName">id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">archived</property>
+                    <text-property name="displayName">archived</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["archived"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">version</property>
+                    <text-property name="displayName">version</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["version"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">created_on</property>
+                    <text-property name="displayName">created_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_on</property>
+                    <text-property name="displayName">updated_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">attrs</property>
+                    <text-property name="displayName">attrs</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["attrs"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">csgt</property>
+                    <text-property name="displayName">csgt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["csgt"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">gross_amount</property>
+                    <text-property name="displayName">gross_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["gross_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">gst_rate</property>
+                    <text-property name="displayName">gst_rate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["gst_rate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">hsbn</property>
+                    <text-property name="displayName">hsbn</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["hsbn"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">igst</property>
+                    <text-property name="displayName">igst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["igst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item</property>
+                    <text-property name="displayName">item</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["item"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">net_amount</property>
+                    <text-property name="displayName">net_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">price</property>
+                    <text-property name="displayName">price</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["price"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">qty</property>
+                    <text-property name="displayName">qty</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["qty"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">sgst</property>
+                    <text-property name="displayName">sgst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["sgst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">created_by</property>
+                    <text-property name="displayName">created_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_by</property>
+                    <text-property name="displayName">updated_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">invoice</property>
+                    <text-property name="displayName">invoice</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["invoice"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">product</property>
+                    <text-property name="displayName">product</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["product"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">total_amount</property>
+                    <text-property name="displayName">total_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["total_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_igst</property>
+                    <text-property name="displayName">net_igst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_igst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_sgst</property>
+                    <text-property name="displayName">net_sgst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_sgst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_csgt</property>
+                    <text-property name="displayName">net_csgt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_csgt"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">total_gross</property>
+                    <text-property name="displayName">total_gross</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["total_gross"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">total_qty</property>
+                    <text-property name="displayName">total_qty</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["total_qty"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <column id="201"/>
+            <column id="202"/>
+            <column id="203"/>
+            <column id="204"/>
+            <column id="205"/>
+            <column id="206"/>
+            <column id="207"/>
+            <column id="208"/>
+            <header>
+                <row id="158">
+                    <cell id="159">
+                        <label id="209">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="marginTop">0pt</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">Item</text-property>
+                        </label>
+                    </cell>
+                    <cell id="161">
+                        <label id="210">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">Qty</text-property>
+                        </label>
+                    </cell>
+                    <cell id="163">
+                        <label id="211">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">Price</text-property>
+                        </label>
+                    </cell>
+                    <cell id="165">
+                        <label id="212">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">Net Amount</text-property>
+                        </label>
+                    </cell>
+                    <cell id="167">
+                        <label id="213">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">IGST</text-property>
+                        </label>
+                    </cell>
+                    <cell id="169">
+                        <label id="214">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">SGST</text-property>
+                        </label>
+                    </cell>
+                    <cell id="171">
+                        <label id="215">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">CGST</text-property>
+                        </label>
+                    </cell>
+                    <cell id="173">
+                        <label id="216">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">Gross Amount</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="175">
+                    <cell id="176">
+                        <text id="221">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["item"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="178">
+                        <text id="220">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["qty"]</VALUE-OF>
+<!-- <VALUE-OF>row["total_qty"]</VALUE-OF> -->]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="180">
+                        <text id="222">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["price"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="182">
+                        <text id="223">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["total_amount"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="184">
+                        <text id="224">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["igst"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="186">
+                        <text id="225">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["sgst"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="188">
+                        <text id="226">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["csgt"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="190">
+                        <text id="227">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["gross_amount"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="192">
+                    <cell id="193">
+                        <property name="textAlign">center</property>
+                        <label id="217">
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <text-property name="text">Total</text-property>
+                        </label>
+                    </cell>
+                    <cell id="194">
+                        <text id="218">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["total_qty"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="195"/>
+                    <cell id="196">
+                        <text id="230">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["total_amount"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="197">
+                        <text id="231">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["net_igst"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="198">
+                        <text id="232">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["net_sgst"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="199">
+                        <text id="233">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["net_csgt"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="200">
+                        <text id="234">
+                            <property name="fontSize">12pt</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["total_gross"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+            </footer>
+        </table>
+        <text id="235">
+            <property name="fontSize">14pt</property>
+            <property name="marginTop">45pt</property>
+            <property name="dataSet">Invoice Set</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <text-property name="displayName">id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">archived</property>
+                    <text-property name="displayName">archived</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["archived"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">version</property>
+                    <text-property name="displayName">version</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["version"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">created_on</property>
+                    <text-property name="displayName">created_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_on</property>
+                    <text-property name="displayName">updated_on</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_on"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">attrs</property>
+                    <text-property name="displayName">attrs</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["attrs"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">gross_amount</property>
+                    <text-property name="displayName">gross_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["gross_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">invoice_datet</property>
+                    <text-property name="displayName">invoice_datet</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["invoice_datet"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">is_use_invoice_address_as_shipping</property>
+                    <text-property name="displayName">is_use_invoice_address_as_shipping</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["is_use_invoice_address_as_shipping"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">net_amount</property>
+                    <text-property name="displayName">net_amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_amount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_csgt</property>
+                    <text-property name="displayName">net_csgt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_csgt"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_igst</property>
+                    <text-property name="displayName">net_igst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_igst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">net_sgst</property>
+                    <text-property name="displayName">net_sgst</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["net_sgst"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">priority</property>
+                    <text-property name="displayName">priority</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["priority"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">reference</property>
+                    <text-property name="displayName">reference</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["reference"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">status_select</property>
+                    <text-property name="displayName">status_select</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["status_select"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">created_by</property>
+                    <text-property name="displayName">created_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["created_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">updated_by</property>
+                    <text-property name="displayName">updated_by</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["updated_by"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">company</property>
+                    <text-property name="displayName">company</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">invoice_address</property>
+                    <text-property name="displayName">invoice_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["invoice_address"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">party</property>
+                    <text-property name="displayName">party</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">party_contact</property>
+                    <text-property name="displayName">party_contact</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party_contact"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">shipping_address</property>
+                    <text-property name="displayName">shipping_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["shipping_address"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">file_name</property>
+                    <text-property name="displayName">file_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">company_name</property>
+                    <text-property name="displayName">company_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">company_address</property>
+                    <text-property name="displayName">company_address</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["company_address"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">party_name</property>
+                    <text-property name="displayName">party_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <property name="contentType">html</property>
+            <text-property name="content"><![CDATA[<I><VALUE-OF>row["company_name"]</VALUE-OF></I>&amp;nbsp;&amp;nbsp;<VALUE-OF>row["company_address"]</VALUE-OF>]]></text-property>
+        </text>
+    </body>
+</report>

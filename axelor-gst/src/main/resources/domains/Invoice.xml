@@ -1,0 +1,19 @@
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.2.xsd">
+
+	<module package="com.axelor.apps.account.db" name="gst" />
+
+	<entity name="Invoice">
+		<string name="statusSelect" title="Status" readonly="true" selection="gst.invoice.status.select" default="draft" />
+		<string name="reference" title="Reference" readonly="true" />
+		<integer name="priority" title="Priority" />
+		<many-to-one name="invoiceAddress" ref="com.axelor.apps.base.db.Address" title="Invoice Address" required="true" />
+		<many-to-one name="shippingAddress" ref="com.axelor.apps.base.db.Address" title="Shipping Address" />
+		<boolean name="isUseInvoiceAddressAsShipping" default="true" title="Use Invoice Address As Shipping" />
+		<decimal name="netIgst" readonly="true" title="Net IGST" />
+		<decimal name="netCsgt" readonly="true" title="Net CSGT" />
+		<decimal name="netSgst" readonly="true" title="Net SGST" />
+	</entity>
+
+</domain-models>

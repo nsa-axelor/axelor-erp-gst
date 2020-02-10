@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+	<grid model="com.axelor.apps.account.db.Invoice" title="Invoice Grid" name="invoice-grid" id="gst-invoice-grid" extension="true">
+		<field name="statusSelect" />
+		<field name="reference" />
+		<field name="priority" />
+		<field name="invoiceAddress" />
+		<field name="shippingAddress" />
+		<field name="netIgst" />
+		<field name="netCsgt" />
+		<field name="netSgst" />
+	</grid>
+
+	<form model="com.axelor.apps.account.db.Invoice" title="Invoice Form" name="invoice-form" onNew="action-gst-record-set-default-values" id="gst-invoice-form" extension="true">
+
+		<extend target="//button[@name='reportsBtn']">
+			<insert position="after">
+				<button name="invoiceReportBtn" title="Invoice Report" onClick="action-gst-group-generate-invoice-report" />
+			</insert>
+		</extend>
+
+		<extend target="panel-tabs[@name='mainPanelTab']">
+			<insert position="after">
+				<panel>
+					<field name="priority" />
+					<field name="invoiceAddress" onChange="action-gst-method-set-total-tax-and-amount-from-invoiceline" />
+					<field name="isUseInvoiceAddressAsShipping" colSpan="6" onChange="action-gst-method-set-values-from-partner" />
+					<field name="shippingAddress" onChange="action-gst-method-set-total-tax-and-amount-from-invoiceline" />
+					<field name="netIgst" />
+					<field name="netCsgt" />
+					<field name="netSgst" />
+				</panel>
+			</insert>
+		</extend>
+
+
+		<extend target="//field[@name='address']">
+			<attribute name="form-view" value="address-form" />
+		</extend>
+
+		<extend target="//field[@name='invoiceLineList']">
+			<attribute name="form-view" value="invoice-line-form" />
+		</extend>
+
+		<!-- <extend target="//panel-related[@name='invoiceLineListPanel']"> <replace> <panel-related name="invoiceLineListPanel" field="invoiceLineList" canNew="statusSelect == 1" canRemove="statusSelect == 
+			1" readonlyIf="statusSelect == 3 || partner == null" colSpan="12" form-view="invoice-line-client-form" grid-view="invoice-line-grid" onChange="action-invoice-method-compute,action-gst-method-set-total-tax-and-amount-from-invoiceline" 
+			canMove="true" orderBy="sequence"/> </replace> </extend> -->
+
+		<extend target="//panel-related[@name='invoiceLineListPanel']">
+			<attribute name="onChange" value="action-invoice-method-compute,action-gst-method-set-total-tax-and-amount-from-invoiceline" />
+		</extend>
+
+		<!-- <extend target="//field[@name='partner']"> -->
+		<!-- <replace> -->
+		<!-- <field name="partner" canEdit="false" form-view="partner-form" grid-view="partner-grid" readonlyIf="((operationTypeSelect == 3 || operationTypeSelect == 4) &amp;&amp; statusSelect != 1) || ((operationTypeSelect 
+			== 1 || operationTypeSelect == 2) &amp;&amp; (statusSelect !=1 || invoiceLineList.length > 0))" onChange="action-group-account-invoice-partner-onchange,action-method-invoice-address-str,action-demo-demod-demo-demode-deomde-moea" 
+			onSelect="action-invoice-method-set-partner-domain" canView="false"/> -->
+		<!-- </replace> -->
+		<!-- </extend> -->
+
+	</form>
+
+	<action-group name="action-group-account-invoice-partner-onchange" id="gat-action-group-onchange-of-partner">
+		<action name="action-invoice-record-partner-change" />
+		<action name="action-invoice-method-payment-mode-condition" />
+		<action name="action-invoice-record-due-date" />
+		<action name="action-invoice-record-estimated-payment-date" />
+		<action name="action-invoice-method-fill-company-bank-details" />
+		<action name="action-invoice-record-specific-note-on-invoice" />
+		<action name="action-invoice-method-fill-advance-payment-set" />
+		<action name="action-invoice-method-set-default-mail" />
+		<action name="action-invoice-method-fill-price-list" />
+		<action name="action-invoice-attrs-interco-supplychain" />
+		<action name="action-invoice-record-interco-supplychain" />
+		<action name="action-invoice-method-check-partner-bank-details-list" />
+		<action name="action-invoice-method-set-pfp-validator-user"
+			if="__config__.app.getApp('account').getActivatePassedForPayment() &amp;&amp; (company.accountConfig.isManagePassedForPayment &amp;&amp; (operationTypeSelect == 1 || company.accountConfig.isManagePFPInRefund &amp;&amp; operationTypeSelect == 2) ) " />
+		<action name="action-invoice-record-set-dummy-field-language" />
+		<action name="action-gst-attrs-set-contact-by-partner-change" />
+	</action-group>
+
+	<action-attrs name="action-gst-attrs-set-contact-by-partner-change">
+		<!-- self.id IN (${partner.contactPartnerSet?.collect{it.id}.join(',')}) AND :company member of self.companySet ||| self.id IN (${partner.contactPartnerSet?.collect{it.id}.join(',')}) AND :company member 
+			of self.companySet -->
+		<!-- <attribute name="value" for="contactPartner" expr="eval: __this__?.partner.contactPartnerSet?.collect{it.id}.get(0)"/> <attribute name="value" for="contactPartner" expr="eval: __this__?.partner.contactPartnerSet?.collect{it.id}.get(0).name"/> -->
+		<!-- <attribute name="value" for="contactPartner" expr="eval: __repo__(Partner).all().filter('self.isContact = true AND self in (SELECT p FROM Partner p join p.companySet c WHERE c in :companySet and 
+			p.id=:partner)').bind('companySet',__this__.partner.companySet).bind('partner',__this__.partner).fetchOne()"/> -->
+		<attribute name="value" for="contactPartner" expr="eval: partner?.contactPartnerSet?.find{it.id}" />
+	</action-attrs>
+
+	<action-method name="action-gst-method-set-total-tax-and-amount-from-invoiceline">
+		<call class="com.axelor.apps.gst.web.InvoiceController" method="calculateTotalTaxAndAmounts" />
+	</action-method>
+
+	<action-group name="action-gst-group-set-domains-and-values-from-partner">
+		<action name="action-gst-method-set-values-from-partner" />
+		<action name="action-gst-attrs-set-domains-for-invoice-and-shipping-address" />
+	</action-group>
+
+	<action-method name="action-gst-method-set-values-from-partner">
+		<call class="com.axelor.apps.gst.web.InvoiceController" method="setPartnerPrimaryContactAndCalculations" />
+	</action-method>
+
+	<action-attrs name="action-gst-attrs-set-domains-for-invoice-and-shipping-address">
+		<!-- <attribute name="domain" for="invoiceAddress" expr="eval: __repo__(Address).all().filter(&quot;self.party = :party AND (self.type = 'invoice' OR self.type = 'default')&quot;).bind('party',__this__.party).fetch().fullAddress.toString()"/> -->
+		<attribute name="domain" for="invoiceAddress" expr="eval: &quot; self.partner = :partner AND (self.type = 'default' OR self.type = 'invoice') &quot;" />
+		<attribute name="domain" for="shippingAddress" expr="eval: &quot; self.partner = :partner AND (self.type = 'default' OR self.type = 'shipping') &quot;" />
+		<attribute name="domain" for="partnerContact" expr="eval: &quot; self.partner= :partner &quot;" />
+	</action-attrs>
+
+	<!-- <action-group name="action-gst-group-change-shipping-address-from-party"> -->
+	<!-- <action name="action-gst-method-change-shipping-address-from-party"/> -->
+	<!-- <action name="action-gst-method-set-total-tax-and-amount-from-invoiceline"/> -->
+	<!-- </action-group> -->
+
+	<!-- <action-method name="action-gst-method-change-shipping-address-from-party"> -->
+	<!-- <call class="com.axelor.apps.gst.web.InvoiceController" method="changeShippingAddress" /> -->
+	<!-- </action-method> -->
+
+	<action-record name="action-gst-record-set-default-values" model="com.axelor.apps.account.db.Invoice">
+		<field name="invoiceDateT" expr="eval: __datetime__" />
+		<field name="company" expr="eval: __repo__(Company).all().fetchOne()" />
+		<field name="invoiceItemList" expr="eval: invoiceItemList" />
+	</action-record>
+
+	<action-group name="action-gst-group-select-validated-status">
+		<action name="action-gst-validate-check-sequence-for-invoice-is-available" />
+		<action name="action-gst-record-select-validated-status" />
+		<action name="action-gst-method-generate-reference-from-sequence" />
+		<action name="save" />
+	</action-group>
+
+	<action-validate name="action-gst-validate-check-sequence-for-invoice-is-available">
+		<error message="Please Specify Sequence for Invoice"
+			if="eval: __repo__(Sequence).all().filter('self.model = :model').bind('model',__repo__(MetaModel).all().filter('self.name = \&apos;Invoice\&apos;').fetchOne()).fetchOne() == null" />
+	</action-validate>
+
+	<action-group name="action-gst-group-select-draft-status">
+		<action name="action-gst-record-select-draft-status" />
+		<action name="save" />
+	</action-group>
+
+	<action-method name="action-gst-method-generate-reference-from-sequence">
+		<call class="com.axelor.apps.gst.web.InvoiceController" method="generateNewSequence" />
+	</action-method>
+
+	<action-record name="action-gst-record-select-draft-status" model="com.axelor.apps.account.db.Invoice">
+		<field name="statusSelect" expr="draft" />
+	</action-record>
+
+	<action-group name="action-gst-group-select-paid-status">
+		<action name="action-gst-record-select-paid-status" />
+		<action name="save" />
+	</action-group>
+
+	<action-group name="action-gst-group-select-cancelled-status">
+		<action name="action-gst-record-select-cancelled-status" />
+		<action name="save" />
+	</action-group>
+
+	<action-record name="action-gst-record-select-validated-status" model="com.axelor.apps.account.db.Invoice">
+		<field name="statusSelect" expr="validated" />
+	</action-record>
+
+	<action-record name="action-gst-record-select-paid-status" model="com.axelor.apps.account.db.Invoice">
+		<field name="statusSelect" expr="paid" />
+	</action-record>
+
+	<action-record name="action-gst-record-select-cancelled-status" model="com.axelor.apps.account.db.Invoice">
+		<field name="statusSelect" expr="cancelled" />
+	</action-record>
+
+	<action-group name="action-gst-group-generate-invoice-report">
+		<action name="action-gst-validate-check-if-id-is-not-null" />
+		<action name="action-gst-report-generate-invoice-report" />
+	</action-group>
+
+	<action-validate name="action-gst-validate-check-if-id-is-not-null">
+		<error message="Please save invoice first!" if="eval: self.id == null" />
+	</action-validate>
+
+	<action-report output="Invoice" name="action-gst-report-generate-invoice-report" design="invoice_report.rptdesign">
+		<param name="invoice_id" expr="eval: __self__.id" />
+		<param name="attechment_path" expr='eval: com?.axelor?.app?.AppSettings?.get()?.getPath("file.upload.dir", "")+"/"' />
+	</action-report>
+
+	<kanban name="invoice-kanban" sequenceBy="priority" model="com.axelor.apps.account.db.Invoice" columnBy="statusSelect" title="Invoice Kanban" draggable="false">
+		<field name="statusSelect" />
+		<field name="company" />
+		<field name="reference" />
+		<field name="invoiceDateT" />
+		<field name="priority" />
+		<field name="partner" />
+		<field name="partnerContact" />
+		<field name="invoiceAddress" />
+		<field name="shippingAddress" />
+		<field name="isUseInvoiceAddressAsShipping" />
+		<field name="netAmount" />
+		<field name="netIgst" />
+		<field name="netCsgt" />
+		<field name="netSgst" />
+		<field name="grossAmount" />
+		<field name="invoiceItemList" />
+		<hilite color="primary" if="priority == 10" />
+		<hilite color="info" if="priority >= 6" />
+		<hilite color="warning" if="priority >= 3" />
+		<hilite color="danger" if="priority >= 0" />
+		<template>
+          <![CDATA[
+               <h4>{{reference}}</h4>
+             <div class="card-body">
+                 <strong>Partner</strong> :{{partner.name}}
+             </div>
+             <div class="card-body">
+                 <strong>Company</strong> :{{company.name}}
+             </div>
+             <div class="card-body"> <strong>Gross Ammount</strong> {{grossAmount}}</div>
+             <div class="card-footer">
+                 <span>{{invoiceDateT|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+             </div>
+
+           ]]>
+        </template>
+	</kanban>
+
+</object-views>

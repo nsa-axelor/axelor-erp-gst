@@ -1,0 +1,15 @@
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.2.xsd">
+
+	<module package="com.axelor.apps.account.db" name="gst" />
+
+
+	<entity name="InvoiceLine">
+		<string name="hsbn" title="HSBN" />
+		<decimal name="igst" readonly="true" title="IGST" />
+		<decimal name="csgt" readonly="true" title="CSGT" />
+		<decimal name="sgst" readonly="true" title="SGST" />
+	</entity>
+
+</domain-models>

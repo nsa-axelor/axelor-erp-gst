@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+	<form model="com.axelor.apps.account.db.InvoiceLine" title="Invoice Line Form" name="invoice-line-form" onNew="action-gst-record-set-quantity" id="gst-invoice-line-form" extension="true">
+		<extend target="//panel[@name='informationsPanel']/*[last()]">
+			<insert position="before">
+				<panel>
+					<field name="hsbn" />
+					<field name="igst" />
+					<field name="csgt" />
+					<field name="sgst" />
+				</panel>
+			</insert>
+		</extend>
+		<extend target="//field[@name='hsbn']">
+			<move position="after" source="//field[@name='taxLine']" />
+		</extend>
+	</form>
+
+	<action-record name="action-gst-record-set-quantity" model="com.axelor.apps.account.db.InvoiceLine">
+		<field name="qty" expr="1" />
+	</action-record>
+
+	<action-group name="action-gst-group-add-item-name-and-price">
+		<action name="action-gst-method-add-item-name" />
+		<action name="action-gst-method-add-price" />
+	</action-group>
+
+	<action-method name="action-gst-method-add-price">
+		<call class="com.axelor.apps.gst.web.InvoiceLineController" method="setProductPrice" />
+	</action-method>
+
+	<action-method name="action-gst-method-add-item-name">
+		<call class="com.axelor.apps.gst.web.InvoiceLineController" method="generateItemName" />
+	</action-method>
+
+	<action-method name="action-gst-method-calculate-tax-and-amount">
+		<call class="com.axelor.apps.gst.web.InvoiceLineController" method="calculateTaxAndAmount" />
+	</action-method>
+
+	<grid model="com.axelor.apps.account.db.InvoiceLine" title="Invoice Line Grid" name="invoice-line-grid">
+		<field name="product" />
+		<field name="hsbn" />
+		<field name="item" />
+		<field name="qty" />
+		<field name="price" />
+		<field name="gstRate" />
+		<field name="netAmount" />
+		<field name="igst" />
+		<field name="csgt" />
+		<field name="sgst" />
+		<field name="grossAmount" />
+	</grid>
+
+</object-views>

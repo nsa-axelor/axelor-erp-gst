@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+	<grid model="com.axelor.apps.base.db.Address" title="Address Grid"
+		name="address-grid" id="gst-address-grid" extension="true">
+		<field name="type" />
+		<field name="line1" />
+		<field name="line2" />
+		<field name="city" />
+		<field name="state" />
+		<field name="country" />
+		<field name="pincode" />
+	</grid>
+
+	<form model="com.axelor.apps.base.db.Address" title="Address Form"
+		id="gst-address-form" name="address-form"
+		onNew="action-gst-record-set-default-address-values" extension="true">
+		<extend target="panel[@title='QAS certification']">
+			<insert position="after">
+				<panel title="Address new fields">
+					<field name="type" />
+					<field name="state" />
+				</panel>
+			</insert>
+		</extend>
+		
+	</form>
+
+	<action-record
+		name="action-gst-record-set-default-address-values"
+		model="com.axelor.apps.base.db.Address">
+		<field name="type" expr="default" />
+	</action-record>
+
+	<action-record
+		name="action-gst-record-set-country-and-state-by-city"
+		model="com.axelor.apps.base.db.Address">
+		<field name="state" expr="eval: __this__.city.state" />
+		<field name="country" expr="eval: __this__.city.state.country" />
+	</action-record>
+
+</object-views>

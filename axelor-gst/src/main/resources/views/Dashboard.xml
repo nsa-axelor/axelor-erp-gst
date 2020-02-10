@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <dashboard name="gst-dashboard" title="Welcome!">
+    <dashlet action="action.gst.view.chart.unpaid.invoices.per.customer" />
+    <dashlet action="action.gst.view.chart.paid.invoices.per.category.per.product" />
+    <dashlet action="action.gst.view.chart.partner.per.state"/>
+    <dashlet action="action.gst.view.chart.invoice.per.status.amount.bar.chart"/>
+    <dashlet action="action.gst.view.chart.invoices.per.staus.line.chart"/>
+    <dashlet action="action.gst.view.older.invoices.validated.and.not.paid"/>
+  </dashboard>
+
+  <action-view name="action.gst.view.chart.unpaid.invoices.per.customer" title="Invoice Chart" model="com.axelor.apps.account.db.Invoice">
+    <view type="chart" name="invoice-unpaid-chart-per-customer" />
+  </action-view>
+
+  <action-view name="action.gst.view.chart.paid.invoices.per.category.per.product" title="Invoice Chart" model="com.axelor.apps.account.db.Invoice">
+    <view type="chart" name="invoice-paid-chart-per-category" />
+  </action-view>
+
+  <action-view name="action.gst.view.chart.partner.per.state" title="Customer Chart" model="com.axelor.apps.base.db.Partner">
+    <view type="chart" name="partner-chart-per-state" />
+  </action-view>
+
+  <action-view name="action.gst.view.chart.invoice.per.status.amount.bar.chart" title="Invoice Amount Chart" model="com.axelor.apps.account.db.Invoice">
+    <view type="chart" name="invoice-per-status-amount-bar"/>
+  </action-view>
+
+  <action-view name="action.gst.view.chart.invoices.per.staus.line.chart" title="Invoices per Status" model="com.axelor.apps.account.db.Invoice">
+    <view type="chart" name="invoice-per-status-line-chart"/>
+  </action-view>
+
+  <action-view name="action.gst.view.older.invoices.validated.and.not.paid" title="Older Invoices" model="com.axelor.apps.account.db.Invoice">
+    <view type="grid" name="invoice-grid"/>
+    <domain>self.invoiceDateT &lt; :beforeOneMonthDateTime</domain>
+    <context name="beforeOneMonthDateTime" expr="eval: LocalDateTime.of((__date__.getMonthValue() == 1) ? __date__.getYear() - 1 : __date__.getYear(), (__date__.getMonthValue() == 1) ? 12 : (LocalDate.now().getMonthValue() - 1), __date__.getDayOfMonth(), __datetime__.getHour(), __datetime__.getMinute());"/>
+  </action-view>
+
+</object-views>

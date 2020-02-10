@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+	<grid model="com.axelor.apps.base.db.Partner" title="Partner Grid" name="partner-grid" id="gst-partner-grid" extension="true">
+		<field name="gstin" />
+	</grid>
+
+	<form model="com.axelor.apps.base.db.Partner" title="Partner Form" name="partner-form" onSave="action-gst-validate-check-for-sequence-is-available" id="gst-partner-form" extension="true">
+		<extend target="panel[@name='mainPanel']">
+			<insert position="after">
+				<panel colSpan="6">
+					<field name="gstin"/>
+				</panel>
+			</insert>
+		</extend>
+	</form>
+
+	<action-validate name="action-gst-validate-check-for-sequence-is-available">
+		<error message="Please Specify Sequence for Partner"
+			if="eval: __repo__(Sequence).all().filter('self.model = :model').bind('model',__repo__(MetaModel).all().filter('self.name = \&apos;Partner\&apos;').fetchOne()).fetchOne() == null" />
+	</action-validate>
+
+	<cards name="partner-card" model="com.axelor.apps.base.db.Partner" title="Partner cards">
+		<field name="reference" />
+		<field name="name" />
+		<field name="type" />
+		<field name="isCustomer" />
+		<field name="isSupplier" />
+		<field name="gstin" />
+		<field name="contactList" />
+		<field name="addressList" />
+		<template>
+          <![CDATA[
+              <div class="span4 card-image">
+                <h3>{{name}}</h3>
+                <strong>{{reference}}</strong>
+              </div>
+              <div class="span8">
+                <h4><strong>{{type}}</strong></h4>
+                <p><strong>GSTIN</strong>  {{gstin}}</p>
+              </div>
+            ]]>
+          </template>
+	</cards>
+
+</object-views>
