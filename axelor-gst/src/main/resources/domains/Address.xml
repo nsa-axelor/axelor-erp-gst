@@ -5,7 +5,7 @@
 	<module package="com.axelor.apps.base.db" name="gst" />
 
 	<entity name="Address">
-		<string name="type" title="Type" selection="gst.address.type.select" required="true" />
+		<string name="type" title="Type" selection="gst.address.type.select" />
 		<many-to-one name="state" ref="com.axelor.apps.gst.db.State" title="State" />
 		<many-to-one name="partner" ref="com.axelor.apps.base.db.Partner" />
 	</entity>
