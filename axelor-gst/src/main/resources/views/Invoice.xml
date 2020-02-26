@@ -23,13 +23,13 @@
 		<extend target="//field[@name='addressStr']">
 			<insert position="after">
 				<panel>
-					<field name="priority" />
+					<field name="priority" if="__config__.app.isApp('gst')"/>
 				</panel>
 			</insert>
 		</extend>
 		<extend target="//field[@name='companyInTaxTotal']">
 			<replace>
-				<field name="companyInTaxTotal" showTitle="false" colSpan="12" css="order-subtotal">
+				<field name="companyInTaxTotal" showTitle="false" colSpan="12" css="order-subtotal" if-module="axelor-gst">
 					<viewer depends="companyExTaxTotal,company.currency.symbol,companyTaxTotal,companyInTaxTotal,companyInTaxTotalRemaining,netIgst,netCsgt,netSgst"><![CDATA[
 				       <dl class="dl-horizontal">
 				         <dt x-translate>Total W.T.</dt>
@@ -62,25 +62,13 @@
 			<attribute name="form-view" value="invoice-line-form" />
 		</extend>
 
-		<!-- <extend target="//panel-related[@name='invoiceLineListPanel']"> <replace> <panel-related name="invoiceLineListPanel" field="invoiceLineList" canNew="statusSelect == 1" canRemove="statusSelect == 
-			1" readonlyIf="statusSelect == 3 || partner == null" colSpan="12" form-view="invoice-line-client-form" grid-view="invoice-line-grid" onChange="action-invoice-method-compute,action-gst-method-set-total-tax-and-amount-from-invoiceline" 
-			canMove="true" orderBy="sequence"/> </replace> </extend> -->
-
-		<extend target="//panel-related[@name='invoiceLineListPanel']">
-			<attribute name="onChange" value="action-invoice-method-compute,action-gst-method-set-total-tax-and-amount-from-invoiceline" />
-		</extend>
-
-		<!-- <extend target="//field[@name='partner']"> -->
-		<!-- <replace> -->
-		<!-- <field name="partner" canEdit="false" form-view="partner-form" grid-view="partner-grid" readonlyIf="((operationTypeSelect == 3 || operationTypeSelect == 4) &amp;&amp; statusSelect != 1) || ((operationTypeSelect 
-			== 1 || operationTypeSelect == 2) &amp;&amp; (statusSelect !=1 || invoiceLineList.length > 0))" onChange="action-group-account-invoice-partner-onchange,action-method-invoice-address-str,action-demo-demod-demo-demode-deomde-moea" 
-			onSelect="action-invoice-method-set-partner-domain" canView="false"/> -->
-		<!-- </replace> -->
-		<!-- </extend> -->
+<!-- 		<extend target="//panel-related[@name='invoiceLineListPanel']"> -->
+<!-- 			<attribute name="onChange" value="action-invoice-method-compute" /> -->
+<!-- 		</extend> -->
 
 	</form>
 
-	<action-group name="action-group-account-invoice-partner-onchange" id="gat-action-group-onchange-of-partner">
+	<action-group name="action-group-account-invoice-partner-onchange" id="gst-action-group-onchange-of-partner">
 		<action name="action-invoice-record-partner-change" />
 		<action name="action-invoice-method-payment-mode-condition" />
 		<action name="action-invoice-record-due-date" />
@@ -97,29 +85,16 @@
 			if="__config__.app.getApp('account').getActivatePassedForPayment() &amp;&amp; (company.accountConfig.isManagePassedForPayment &amp;&amp; (operationTypeSelect == 1 || company.accountConfig.isManagePFPInRefund &amp;&amp; operationTypeSelect == 2) ) " />
 		<action name="action-invoice-record-set-dummy-field-language" />
 		<action name="action-gst-attrs-set-contact-by-partner-change" />
+		<action name="action-invoice-method-compute" if="__this__.invoiceLineList != null &amp;&amp; __this__.partner != null"/>
 	</action-group>
 
 	<action-attrs name="action-gst-attrs-set-contact-by-partner-change">
-		<!-- self.id IN (${partner.contactPartnerSet?.collect{it.id}.join(',')}) AND :company member of self.companySet ||| self.id IN (${partner.contactPartnerSet?.collect{it.id}.join(',')}) AND :company member 
-			of self.companySet -->
-		<!-- <attribute name="value" for="contactPartner" expr="eval: __this__?.partner.contactPartnerSet?.collect{it.id}.get(0)"/> <attribute name="value" for="contactPartner" expr="eval: __this__?.partner.contactPartnerSet?.collect{it.id}.get(0).name"/> -->
-		<!-- <attribute name="value" for="contactPartner" expr="eval: __repo__(Partner).all().filter('self.isContact = true AND self in (SELECT p FROM Partner p join p.companySet c WHERE c in :companySet and 
-			p.id=:partner)').bind('companySet',__this__.partner.companySet).bind('partner',__this__.partner).fetchOne()"/> -->
 		<attribute name="value" for="contactPartner" expr="eval: partner?.contactPartnerSet?.find{it.id}" />
 	</action-attrs>
 
-	<action-method name="action-gst-method-set-total-tax-and-amount-from-invoiceline">
-		<call class="com.axelor.apps.gst.web.InvoiceController" method="calculateTotalTaxAndAmounts" />
-	</action-method>
-
 	<action-group name="action-gst-group-set-domains-and-values-from-partner">
-		<action name="action-gst-method-set-values-from-partner" />
 		<action name="action-gst-attrs-set-domains-for-invoice-and-shipping-address" />
 	</action-group>
-
-	<action-method name="action-gst-method-set-values-from-partner">
-		<call class="com.axelor.apps.gst.web.InvoiceController" method="setPartnerPrimaryContactAndCalculations" />
-	</action-method>
 
 	<action-attrs name="action-gst-attrs-set-domains-for-invoice-and-shipping-address">
 		<!-- <attribute name="domain" for="invoiceAddress" expr="eval: __repo__(Address).all().filter(&quot;self.party = :party AND (self.type = 'invoice' OR self.type = 'default')&quot;).bind('party',__this__.party).fetch().fullAddress.toString()"/> -->
@@ -127,15 +102,6 @@
 		<attribute name="domain" for="shippingAddress" expr="eval: &quot; self.partner = :partner AND (self.type = 'default' OR self.type = 'shipping') &quot;" />
 		<attribute name="domain" for="partnerContact" expr="eval: &quot; self.partner= :partner &quot;" />
 	</action-attrs>
-
-	<!-- <action-group name="action-gst-group-change-shipping-address-from-party"> -->
-	<!-- <action name="action-gst-method-change-shipping-address-from-party"/> -->
-	<!-- <action name="action-gst-method-set-total-tax-and-amount-from-invoiceline"/> -->
-	<!-- </action-group> -->
-
-	<!-- <action-method name="action-gst-method-change-shipping-address-from-party"> -->
-	<!-- <call class="com.axelor.apps.gst.web.InvoiceController" method="changeShippingAddress" /> -->
-	<!-- </action-method> -->
 
 	<action-record name="action-gst-record-set-default-values" model="com.axelor.apps.account.db.Invoice">
 		<field name="invoiceDateT" expr="eval: __datetime__" />
@@ -146,7 +112,6 @@
 	<action-group name="action-gst-group-select-validated-status">
 		<action name="action-gst-validate-check-sequence-for-invoice-is-available" />
 		<action name="action-gst-record-select-validated-status" />
-		<action name="action-gst-method-generate-reference-from-sequence" />
 		<action name="save" />
 	</action-group>
 
@@ -160,34 +125,8 @@
 		<action name="save" />
 	</action-group>
 
-	<action-method name="action-gst-method-generate-reference-from-sequence">
-		<call class="com.axelor.apps.gst.web.InvoiceController" method="generateNewSequence" />
-	</action-method>
-
 	<action-record name="action-gst-record-select-draft-status" model="com.axelor.apps.account.db.Invoice">
 		<field name="statusSelect" expr="draft" />
-	</action-record>
-
-	<action-group name="action-gst-group-select-paid-status">
-		<action name="action-gst-record-select-paid-status" />
-		<action name="save" />
-	</action-group>
-
-	<action-group name="action-gst-group-select-cancelled-status">
-		<action name="action-gst-record-select-cancelled-status" />
-		<action name="save" />
-	</action-group>
-
-	<action-record name="action-gst-record-select-validated-status" model="com.axelor.apps.account.db.Invoice">
-		<field name="statusSelect" expr="validated" />
-	</action-record>
-
-	<action-record name="action-gst-record-select-paid-status" model="com.axelor.apps.account.db.Invoice">
-		<field name="statusSelect" expr="paid" />
-	</action-record>
-
-	<action-record name="action-gst-record-select-cancelled-status" model="com.axelor.apps.account.db.Invoice">
-		<field name="statusSelect" expr="cancelled" />
 	</action-record>
 
 	<action-group name="action-gst-group-generate-invoice-report">

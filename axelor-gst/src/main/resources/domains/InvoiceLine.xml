@@ -7,6 +7,7 @@
 
 	<entity name="InvoiceLine">
 		<string name="hsbn" title="HSBN" />
+		<decimal name="gstRate" title="GST rate" readonly="true" />
 		<decimal name="igst" readonly="true" title="IGST" />
 		<decimal name="csgt" readonly="true" title="CSGT" />
 		<decimal name="sgst" readonly="true" title="SGST" />

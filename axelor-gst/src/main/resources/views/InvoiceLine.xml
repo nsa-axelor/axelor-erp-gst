@@ -7,51 +7,119 @@
 		<extend target="//panel[@name='informationsPanel']/*[last()]">
 			<insert position="before">
 				<panel>
-					<field name="hsbn" />
-					<field name="igst" />
-					<field name="csgt" />
-					<field name="sgst" />
+					<field name="gstRate" if-module="axelor-gst"/>
+					<field name="hsbn" if-module="axelor-gst"/>
+					<field name="igst" if-module="axelor-gst"/>
+					<field name="csgt" if-module="axelor-gst"/>
+					<field name="sgst" if-module="axelor-gst"/>
 				</panel>
 			</insert>
 		</extend>
 		<extend target="//field[@name='hsbn']">
 			<move position="after" source="//field[@name='taxLine']" />
 		</extend>
+		<extend target="//field[@name='taxLine']">
+			<replace>
+				<field name="taxLine" canEdit="false" onChange="action-invoice-line-group-tax-line-onchange" grid-view="tax-line-grid" form-view="tax-line-form"
+					domain="self.endDate = null or self.endDate &gt; :__date__" />
+			</replace>
+		</extend>
+		<extend target="//field[@name='price']">
+			<replace>
+				<field name="price" colSpan="3" required="true" onChange="action-invoice-line-group-price-onchange" hidden="true" />
+			</replace>
+		</extend>
+		<extend target="//field[@name='discountAmount']">
+			<replace>
+				<field name="discountAmount" colSpan="3" onChange="action-invoice-line-group-discountamount-onchange" hideIf="discountTypeSelect == 3" />
+			</replace>
+		</extend>
+		<extend target="//field[@name='discountTypeSelect']">
+			<replace>
+				<field name="discountTypeSelect" colSpan="3" onChange="action-invoice-line-group-discounttype-onchange" />
+			</replace>
+		</extend>
 	</form>
 
-	<action-record name="action-gst-record-set-quantity" model="com.axelor.apps.account.db.InvoiceLine">
-		<field name="qty" expr="1" />
-	</action-record>
-
-	<action-group name="action-gst-group-add-item-name-and-price">
-		<action name="action-gst-method-add-item-name" />
-		<action name="action-gst-method-add-price" />
+	<action-group name="action-invoice-line-group-discounttype-onchange">
+		<action name="action-invoice-line-method-compute" />
+		<action name="action-invoice-line-attrs-discountamount-title" />
+		<action name="action-invoice-line-method-compute-analytic-distribution" />
+		<action name="action-budget-validate-exceed-line-amount" />
+		<action name="action-invoice-line-method-compute-gst-values" />
 	</action-group>
 
-	<action-method name="action-gst-method-add-price">
-		<call class="com.axelor.apps.gst.web.InvoiceLineController" method="setProductPrice" />
+	<action-group name="action-invoice-line-group-discountamount-onchange">
+		<action name="action-invoice-line-method-compute" />
+		<action name="action-invoice-line-method-compute-analytic-distribution" />
+		<action name="action-budget-validate-exceed-line-amount" />
+		<action name="action-invoice-line-method-compute-gst-values" />
+	</action-group>
+
+	<action-group name="action-invoice-line-group-price-onchange">
+		<action name="action-invoice-line-method-onchange-price" />
+		<action name="action-invoice-line-method-compute" />
+		<action name="action-invoice-line-method-compute-analytic-distribution" />
+		<action name="action-budget-validate-exceed-line-amount" />
+		<action name="action-invoice-line-method-compute-gst-values" />
+	</action-group>
+
+	<action-group name="action-invoice-line-group-tax-line-onchange">
+		<action name="action-invoice-line-method-convert-tax" />
+		<action name="action-invoice-line-method-compute" />
+		<action name="action-invoice-line-method-compute-analytic-distribution" />
+		<action name="action-budget-validate-exceed-line-amount" />
+		<action name="action-invoice-line-method-compute-gst-values" />
+		<action name="action-invoice-line-attrs-show-intaxtotal" />
+	</action-group>
+
+	<action-attrs name="action-invoice-line-attrs-show-intaxtotal">
+		<attribute name="hidden" for="inTaxTotal" expr="eval: __this__.taxCode != &quot;GST&quot;" />
+	</action-attrs>
+
+	<action-group name="action-group-account-invoice-line-product-onchange" id="gst-action-invoice-line-group-product-onchange">
+		<action name="action-invoice-line-method-get-product-information" />
+		<action name="action-invoice-line-method-get-product-price"
+			if="__config__.app.isApp('supplychain') &amp;&amp; (__config__.app.isApp('sale') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
+		<action name="action-invoice-line-method-compute" />
+		<action name="action-invoice-line-method-get-and-compute-analytic-distribution" />
+		<action name="action-budget-validate-exceed-line-amount" />
+		<action name="action-invoice-line-attrs-compute-total-pack" if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
+		<action name="action-invoice-line-method-get-fixed-asset-category" if="__config__.app.isApp('account')" />
+		<action name="action-attrs-account-invoice-line-onnew-onload" />
+		<action name="action-gst-group-add-item-name-and-price" />
+		<action name="action-invoice-line-method-compute-gst-values" />
+		<action name="action-invoice-line-attrs-show-intaxtotal" />
+	</action-group>
+
+	<action-group name="action-group-account-invoice-line-qty-onchange" id="gst-action-group-account-invoice-line-qty-onchange">
+		<action name="action-invoice-line-method-get-discount" />
+		<action name="action-invoice-line-method-compute" />
+		<action name="action-invoice-line-method-compute-analytic-distribution" />
+		<action name="action-budget-validate-exceed-line-amount" />
+		<action name="action-invoice-method-title-subline-update-qty" if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
+		<action name="action-invoice-line-attrs-compute-total-pack" if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
+		<action name="action-invoice-line-method-compute-gst-values" />
+	</action-group>
+
+	<action-method name="action-invoice-line-method-compute-gst-values">
+		<call class="com.axelor.apps.gst.web.InvoiceLineController" method="computeGstRates" />
 	</action-method>
 
-	<action-method name="action-gst-method-add-item-name">
-		<call class="com.axelor.apps.gst.web.InvoiceLineController" method="generateItemName" />
-	</action-method>
+	<!-- <action-record name="action-gst-record-set-quantity" model="com.axelor.apps.account.db.InvoiceLine"> <field name="qty" expr="1" /> </action-record> <action-group name="action-gst-group-add-item-name-and-price"> 
+		<action name="action-gst-method-add-item-name" /> <action name="action-gst-method-add-price" /> </action-group> <action-method name="action-gst-method-add-price"> <call class="com.axelor.apps.gst.web.InvoiceLineController" 
+		method="setProductPrice" /> </action-method> <action-method name="action-gst-method-add-item-name"> <call class="com.axelor.apps.gst.web.InvoiceLineController" method="generateItemName" /> </action-method> 
+		<action-method name="action-gst-method-calculate-tax-and-amount"> <call class="com.axelor.apps.gst.web.InvoiceLineController" method="calculateTaxAndAmount" /> </action-method> -->
 
-	<action-method name="action-gst-method-calculate-tax-and-amount">
-		<call class="com.axelor.apps.gst.web.InvoiceLineController" method="calculateTaxAndAmount" />
-	</action-method>
-
-	<grid model="com.axelor.apps.account.db.InvoiceLine" title="Invoice Line Grid" name="invoice-line-grid">
-		<field name="product" />
-		<field name="hsbn" />
-		<field name="item" />
-		<field name="qty" />
-		<field name="price" />
-		<field name="gstRate" />
-		<field name="netAmount" />
-		<field name="igst" />
-		<field name="csgt" />
-		<field name="sgst" />
-		<field name="grossAmount" />
+	<grid model="com.axelor.apps.account.db.InvoiceLine" title="Invoice Line Grid" name="invoice-line-grid" extension="true" id="gst-invoice-line-grid">
+		<extend target="//field[@name='exTaxTotal']" if-module="axelor-gst">
+			<insert position="after">
+				<field name="gstRate" />
+				<field name="igst" />
+				<field name="csgt" />
+				<field name="sgst" />
+			</insert>
+		</extend>
 	</grid>
 
 </object-views>
