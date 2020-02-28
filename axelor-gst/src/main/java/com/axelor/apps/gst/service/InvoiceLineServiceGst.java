@@ -6,5 +6,6 @@ import java.util.Map;
 
 public interface InvoiceLineServiceGst {
   public Map<String, Object> getGstValues(Invoice invoice, InvoiceLine invoiceLine);
+
   public InvoiceLine calculateInvoiceLine(InvoiceLine line, Invoice parent);
 }

@@ -2,7 +2,7 @@
     xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
   http://axelor.com/xml/ns/domain-models/domain-models_5.2.xsd">
 
-    <module package="com.axelor.apps.base.db" name="gst" />
+    <module package="com.axelor.apps.base.db" name="base" />
 
     <entity name="Product">
         <string name="hsbn" title="HSBN" />

@@ -2,13 +2,10 @@
 	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
   http://axelor.com/xml/ns/domain-models/domain-models_5.2.xsd">
 
-	<module package="com.axelor.apps.account.db" name="gst" />
+	<module package="com.axelor.apps.account.db" name="account" />
 
 	<entity name="Invoice">
-		<string name="statusSelect" title="Status" readonly="true" selection="gst.invoice.status.select" default="draft" />
-		<string name="reference" title="Reference" readonly="true" />
 		<integer name="priority" title="Priority" />
-		<many-to-one name="invoiceAddress" ref="com.axelor.apps.base.db.Address" title="Invoice Address" />
 		<decimal name="netIgst" readonly="true" title="Net IGST" />
 		<decimal name="netCsgt" readonly="true" title="Net CSGT" />
 		<decimal name="netSgst" readonly="true" title="Net SGST" />
