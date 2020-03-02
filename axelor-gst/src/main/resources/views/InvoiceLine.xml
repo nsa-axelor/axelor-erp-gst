@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
 
-	<form model="com.axelor.apps.account.db.InvoiceLine" title="Invoice Line Form" name="invoice-line-form" onNew="action-gst-record-set-quantity" id="gst-invoice-line-form" extension="true">
+	<form model="com.axelor.apps.account.db.InvoiceLine" title="Invoice Line Form" name="invoice-line-form" id="gst-invoice-line-form" extension="true">
 		<extend target="//panel[@name='informationsPanel']/*[last()]">
 			<insert position="before">
 				<panel>
@@ -45,14 +45,12 @@
 		<action name="action-invoice-line-method-compute" />
 		<action name="action-invoice-line-attrs-discountamount-title" />
 		<action name="action-invoice-line-method-compute-analytic-distribution" />
-		<action name="action-budget-validate-exceed-line-amount" />
 		<action name="action-invoice-line-method-compute-gst-values" />
 	</action-group>
 
 	<action-group name="action-invoice-line-group-discountamount-onchange">
 		<action name="action-invoice-line-method-compute" />
 		<action name="action-invoice-line-method-compute-analytic-distribution" />
-		<action name="action-budget-validate-exceed-line-amount" />
 		<action name="action-invoice-line-method-compute-gst-values" />
 	</action-group>
 
@@ -60,7 +58,6 @@
 		<action name="action-invoice-line-method-onchange-price" />
 		<action name="action-invoice-line-method-compute" />
 		<action name="action-invoice-line-method-compute-analytic-distribution" />
-		<action name="action-budget-validate-exceed-line-amount" />
 		<action name="action-invoice-line-method-compute-gst-values" />
 	</action-group>
 
@@ -68,7 +65,6 @@
 		<action name="action-invoice-line-method-convert-tax" />
 		<action name="action-invoice-line-method-compute" />
 		<action name="action-invoice-line-method-compute-analytic-distribution" />
-		<action name="action-budget-validate-exceed-line-amount" />
 		<action name="action-invoice-line-method-compute-gst-values" />
 		<action name="action-invoice-line-attrs-show-intaxtotal" />
 	</action-group>
@@ -78,27 +74,31 @@
 	</action-attrs>
 
 	<action-group name="action-group-account-invoice-line-product-onchange" id="gst-action-invoice-line-group-product-onchange">
-		<action name="action-invoice-line-method-get-product-information" />
-		<action name="action-invoice-line-method-get-product-price"
-			if="__config__.app.isApp('supplychain') &amp;&amp; (__config__.app.isApp('sale') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
-		<action name="action-invoice-line-method-compute" />
-		<action name="action-invoice-line-method-get-and-compute-analytic-distribution" />
-		<action name="action-budget-validate-exceed-line-amount" />
-		<action name="action-invoice-line-attrs-compute-total-pack" if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
-		<action name="action-invoice-line-method-get-fixed-asset-category" if="__config__.app.isApp('account')" />
-		<action name="action-attrs-account-invoice-line-onnew-onload" />
-		<action name="action-gst-group-add-item-name-and-price" />
+		<action name="action-invoice-line-method-get-product-information"/>
+    	<action name="action-invoice-line-method-compute"/>
+    	<action name="action-invoice-line-method-get-and-compute-analytic-distribution"/>
+    	<action name="action-budget-validate-exceed-line-amount"/>
+    	<action name="action-invoice-line-method-get-fixed-asset-category" if="__config__.app.isApp('account')"/>
+    	<action name="action-attrs-account-invoice-line-onnew-onload"/>
 		<action name="action-invoice-line-method-compute-gst-values" />
 		<action name="action-invoice-line-attrs-show-intaxtotal" />
+		<action name="action-invoice-line-attrs-show-price"/>
+		<action name="action-invoice-line-attrs-set-scale"/>
 	</action-group>
+
+	<action-attrs name="action-invoice-line-attrs-show-price">
+		<attribute name="hidden" for="price" expr="eval: false"/>
+	</action-attrs>
+	
+	<action-attrs name="action-invoice-line-attrs-set-scale">
+		<attribute name="scale" for="qty" expr="eval: 2"/>
+	</action-attrs>
 
 	<action-group name="action-group-account-invoice-line-qty-onchange" id="gst-action-group-account-invoice-line-qty-onchange">
 		<action name="action-invoice-line-method-get-discount" />
 		<action name="action-invoice-line-method-compute" />
 		<action name="action-invoice-line-method-compute-analytic-distribution" />
 		<action name="action-budget-validate-exceed-line-amount" />
-		<action name="action-invoice-method-title-subline-update-qty" if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
-		<action name="action-invoice-line-attrs-compute-total-pack" if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('sale').getProductPackMgt())" />
 		<action name="action-invoice-line-method-compute-gst-values" />
 	</action-group>
 

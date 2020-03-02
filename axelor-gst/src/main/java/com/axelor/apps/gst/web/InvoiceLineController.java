@@ -22,7 +22,8 @@ public class InvoiceLineController {
         InvoiceLine invoiceLine = request.getContext().asType(InvoiceLine.class);
         Map<String, Object> gstValues = new HashMap<>();
         System.err.println("testing");
-        gstValues.putAll(invoiceLineService.getGstValues(parent, invoiceLine));
+        Boolean isStateMatched = invoiceLineService.checkIsStateMatched(parent);
+        gstValues.putAll(invoiceLineService.getGstValues(isStateMatched, invoiceLine));
         gstValues.forEach(
             (key, value) -> {
               response.setValue(key, value);

@@ -4,12 +4,12 @@
   http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
 
 	<grid model="com.axelor.apps.base.db.Product" title="Product Grid" name="product-grid" id="gst-product-grid" extension="true">
-		<extend target="//button[@name='checkDuplicateBtn']">
-			<insert position="after">
-				<button name="createInvoiceBtn" title="Create Invoice" onClick="action-gst-method-open-invoice-form-with-product" />
-				<button name="importProductBtn" title="Import Some Products" onClick="action-gst-method-import-products" />
-			</insert>
-		</extend>
+<!-- 		<extend target="//button[@name='checkDuplicateBtn']"> -->
+<!-- 			<insert position="after"> -->
+<!-- 				<button name="createInvoiceBtn" title="Create Invoice" onClick="action-gst-method-open-invoice-form-with-product" /> -->
+<!-- 				<button name="importProductBtn" title="Import Some Products" onClick="action-gst-method-import-products" /> -->
+<!-- 			</insert> -->
+<!-- 		</extend> -->
 		<extend target="//field[@name='internalDescription']">
 			<insert position="after">
 				<field name="hsbn" />
@@ -24,11 +24,11 @@
 
 	<form model="com.axelor.apps.base.db.Product" title="Product Form" name="product-form" id="gst-product-form" extension="true">
 
-		<extend target="//button[@name='sendByEmailBtn']">
-			<insert position="after">
-				<button name="productReportBtn" title="Print" onClick="action-gst-report-generate-product-report" />
-			</insert>
-		</extend>
+<!-- 		<extend target="//button[@name='sendByEmailBtn']"> -->
+<!-- 			<insert position="after"> -->
+<!-- 				<button name="productReportBtn" title="Print" onClick="action-gst-report-generate-product-report" /> -->
+<!-- 			</insert> -->
+<!-- 		</extend> -->
 		<extend target="panel[@name='mainPanel']">
 			<insert position="after">
 				<panel>

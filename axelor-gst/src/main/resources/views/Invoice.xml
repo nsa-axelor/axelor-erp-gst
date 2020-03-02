@@ -14,11 +14,11 @@
 
 	<form model="com.axelor.apps.account.db.Invoice" title="Invoice Form" name="invoice-form" onNew="action-gst-record-set-default-values" id="gst-invoice-form" extension="true">
 
-		<extend target="//button[@name='reportsBtn']">
-			<insert position="after">
-				<button name="invoiceReportBtn" title="Invoice Report" onClick="action-gst-group-generate-invoice-report" />
-			</insert>
-		</extend>
+<!-- 		<extend target="//button[@name='reportsBtn']"> -->
+<!-- 			<insert position="after"> -->
+<!-- 				<button name="invoiceReportBtn" title="Invoice Report" onClick="action-gst-group-generate-invoice-report" /> -->
+<!-- 			</insert> -->
+<!-- 		</extend> -->
 
 		<extend target="//field[@name='addressStr']">
 			<insert position="after">
