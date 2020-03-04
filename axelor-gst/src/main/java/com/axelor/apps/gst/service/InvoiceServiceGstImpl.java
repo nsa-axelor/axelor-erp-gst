@@ -37,9 +37,9 @@ public class InvoiceServiceGstImpl extends InvoiceServiceProjectImpl {
 	InvoiceLineServiceGst invoiceLineService;
 
 	public Invoice getCalculatedInvoice(Invoice invoice, List<InvoiceLine> lineList) {
-		BigDecimal netIgst = new BigDecimal(0);
-		BigDecimal netCgst = new BigDecimal(0);
-		BigDecimal netSgst = new BigDecimal(0);
+		BigDecimal netIgst = BigDecimal.ZERO;
+		BigDecimal netCgst = BigDecimal.ZERO;
+		BigDecimal netSgst = BigDecimal.ZERO;
 		Boolean isStateMatched = invoiceLineService.checkIsStateMatched(invoice);
 		for (InvoiceLine line : lineList) {
 			Map<String, Object> map = invoiceLineService.getGstValues(isStateMatched, line);
@@ -64,10 +64,10 @@ public class InvoiceServiceGstImpl extends InvoiceServiceProjectImpl {
 			BigDecimal sgst = (BigDecimal) map.get("sgst");
 			BigDecimal exTaxTotal = line.getPrice().multiply(line.getQty());
 			BigDecimal inTaxTotal = (BigDecimal) map.get("inTaxTotal");
-			line.setIgst(igst.setScale(2));
-			line.setSgst(sgst.setScale(2));
-			line.setCsgt(cgst.setScale(2));
-			line.setExTaxTotal(exTaxTotal.setScale(2));
+			line.setIgst(igst);
+			line.setSgst(sgst);
+			line.setCsgt(cgst);
+			line.setExTaxTotal(exTaxTotal);
 			line.setInTaxTotal(inTaxTotal);
 		});
 		return lines;

@@ -49,31 +49,35 @@ public class InvoiceLineServiceGstImpl extends InvoiceLineProjectServiceImpl imp
 			if (invoiceLine.getTaxCode().equalsIgnoreCase("GST")) {
 
 				BigDecimal gstRate = invoiceLine.getProduct().getGstRate();
-				gstValues.put("gstRate", gstRate.setScale(2));
+				gstValues.put("gstRate", gstRate);
 				BigDecimal netAmount = invoiceLine.getPriceDiscounted().multiply(invoiceLine.getQty());
-				if (!isStateMatched.booleanValue()) {
-					System.err.println(gstRate.doubleValue());
+				if (isStateMatched == null) {
+					gstValues.put("igst", BigDecimal.ZERO);
+					gstValues.put("sgst", BigDecimal.ZERO);
+					gstValues.put("csgt", BigDecimal.ZERO);
+					return gstValues;
+				} else if (!isStateMatched.booleanValue()) {
 					BigDecimal igst = gstRate.multiply(netAmount).divide(new BigDecimal(100));
-					invoiceLine.setIgst(igst.setScale(2));
-					gstValues.put("igst", igst.setScale(2));
-					gstValues.put("sgst", new BigDecimal(0).setScale(2));
-					gstValues.put("csgt", new BigDecimal(0).setScale(2));
+					invoiceLine.setIgst(igst);
+					gstValues.put("igst", igst);
+					gstValues.put("sgst", BigDecimal.ZERO);
+					gstValues.put("csgt", BigDecimal.ZERO);
 					return gstValues;
 				} else {
 					BigDecimal sgst = gstRate.multiply(netAmount).divide(new BigDecimal(100));
 					sgst = sgst.divide(new BigDecimal(2));
 					BigDecimal cgst = gstRate.multiply(netAmount).divide(new BigDecimal(100));
 					cgst = cgst.divide(new BigDecimal(2));
-					gstValues.put("igst", new BigDecimal(0).setScale(2));
-					gstValues.put("csgt", cgst.setScale(2));
-					gstValues.put("sgst", sgst.setScale(2));
+					gstValues.put("igst", BigDecimal.ZERO);
+					gstValues.put("csgt", cgst);
+					gstValues.put("sgst", sgst);
 					return gstValues;
 				}
 			} else {
-				gstValues.put("igst", BigDecimal.ZERO.setScale(2));
-				gstValues.put("sgst", BigDecimal.ZERO.setScale(2));
-				gstValues.put("csgt", BigDecimal.ZERO.setScale(2));
-				gstValues.put("gstRate", BigDecimal.ZERO.setScale(2));
+				gstValues.put("igst", BigDecimal.ZERO);
+				gstValues.put("sgst", BigDecimal.ZERO);
+				gstValues.put("csgt", BigDecimal.ZERO);
+				gstValues.put("gstRate", BigDecimal.ZERO);
 				return gstValues;
 			}
 		} catch (Exception e) {
@@ -86,9 +90,10 @@ public class InvoiceLineServiceGstImpl extends InvoiceLineProjectServiceImpl imp
 	public Boolean checkIsStateMatched(Invoice invoice) {
 		State invoiceAddressState = invoice.getAddress().getState();
 		State companyAddressState = invoice.getCompany().getAddress().getState();
-		if (!invoiceAddressState.getName().equals(companyAddressState.getName())) {
+		if (invoiceAddressState == null || companyAddressState == null)
+			return null;
+		else if (!invoiceAddressState.getName().equals(companyAddressState.getName()))
 			return Boolean.FALSE;
-		}
 		return Boolean.TRUE;
 	}
 }
