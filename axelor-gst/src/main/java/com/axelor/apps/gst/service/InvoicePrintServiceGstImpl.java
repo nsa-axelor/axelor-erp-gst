@@ -23,7 +23,6 @@ public class InvoicePrintServiceGstImpl extends InvoicePrintServiceImpl {
   public InvoicePrintServiceGstImpl(
       InvoiceRepository invoiceRepo, AccountConfigRepository accountConfigRepo) {
     super(invoiceRepo, accountConfigRepo);
-    // TODO Auto-generated constructor stub
   }
 
   @Override

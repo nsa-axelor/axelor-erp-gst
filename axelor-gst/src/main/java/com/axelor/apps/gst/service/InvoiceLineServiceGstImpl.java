@@ -1,5 +1,9 @@
 package com.axelor.apps.gst.service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.axelor.apps.account.db.Invoice;
 import com.axelor.apps.account.db.InvoiceLine;
 import com.axelor.apps.account.service.AccountManagementAccountService;
@@ -12,11 +16,9 @@ import com.axelor.apps.businessproject.service.InvoiceLineProjectServiceImpl;
 import com.axelor.apps.gst.db.State;
 import com.axelor.apps.purchase.service.PurchaseProductService;
 import com.axelor.exception.AxelorException;
+import com.axelor.exception.service.TraceBackService;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InvoiceLineServiceGstImpl extends InvoiceLineProjectServiceImpl implements InvoiceLineServiceGst {
 
@@ -44,11 +46,10 @@ public class InvoiceLineServiceGstImpl extends InvoiceLineProjectServiceImpl imp
 	public Map<String, Object> getGstValues(Boolean isStateMatched, InvoiceLine invoiceLine) {
 		Map<String, Object> gstValues = new HashMap<>();
 		try {
-			if (invoiceLine.getTaxCode().equals("GST")) {
+			if (invoiceLine.getTaxCode().equalsIgnoreCase("GST")) {
 
 				BigDecimal gstRate = invoiceLine.getProduct().getGstRate();
 				gstValues.put("gstRate", gstRate.setScale(2));
-				// BigDecimal netAmount = invoiceLine.getExTaxTotal();
 				BigDecimal netAmount = invoiceLine.getPriceDiscounted().multiply(invoiceLine.getQty());
 				if (!isStateMatched.booleanValue()) {
 					System.err.println(gstRate.doubleValue());
@@ -57,8 +58,6 @@ public class InvoiceLineServiceGstImpl extends InvoiceLineProjectServiceImpl imp
 					gstValues.put("igst", igst.setScale(2));
 					gstValues.put("sgst", new BigDecimal(0).setScale(2));
 					gstValues.put("csgt", new BigDecimal(0).setScale(2));
-					// BigDecimal grossAmount = netAmount.add(igst);
-					// gstValues.put("inTaxTotal", grossAmount);
 					return gstValues;
 				} else {
 					BigDecimal sgst = gstRate.multiply(netAmount).divide(new BigDecimal(100));
@@ -68,9 +67,6 @@ public class InvoiceLineServiceGstImpl extends InvoiceLineProjectServiceImpl imp
 					gstValues.put("igst", new BigDecimal(0).setScale(2));
 					gstValues.put("csgt", cgst.setScale(2));
 					gstValues.put("sgst", sgst.setScale(2));
-					// BigDecimal grossAmount = netAmount.add(cgst).add(sgst);
-					// gstValues.put("inTaxTotal", grossAmount);
-					// System.err.println(gstRate.doubleValue()+"FROM ELSE");
 					return gstValues;
 				}
 			} else {
@@ -81,7 +77,7 @@ public class InvoiceLineServiceGstImpl extends InvoiceLineProjectServiceImpl imp
 				return gstValues;
 			}
 		} catch (Exception e) {
-			System.err.println("EXCEPTION");
+			TraceBackService.trace(e);
 		}
 		return gstValues;
 	}
